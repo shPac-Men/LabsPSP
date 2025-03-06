@@ -1,0 +1,128 @@
+/* опишем базовый стиль кнопки калькулятора */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center; /* Центрирование по вертикали */
+    background-color: #f0f0f0; /* Фоновый цвет страницы */
+}
+.my-btn {  
+    margin-right: 5px;           /* задаем отступ от кнопки справа */
+    margin-top: 5px;             /* задаем отступ от кнопки сверху*/
+    width: 50px;                 /* задаем ширину кнопки */
+    height: 50px;                /* задаем высоту кнопки */
+    border-radius: 20%;          /* округляем кнопку */
+    border: none;                /* отключаем обводку */
+    background: #2460e1; /*          задаем серый цвет кнопки */
+    color: white;                /* задаем белый цвет текста внутри кнопки */
+    font-size: 1.5rem;           /* увеличим размер шрифта */
+    font-family: Arial, Helvetica, sans-serif; /* сменим шрифт */
+    cursor: pointer;             /* при наведении на кнопку курсор будет изменен
+                                    со стрелки на 'указательный палец' */
+    user-select: none;           /* отключаем возможность выделить текст внутри кнопки */
+  } 
+  
+.changeBackground{
+    float: right;
+    margin-right: 5px;           /* задаем отступ от кнопки справа */
+    margin-top: 5px;             /* задаем отступ от кнопки сверху*/
+    width: 50px;                 /* задаем ширину кнопки */
+    height: 50px;                /* задаем высоту кнопки */
+    border-radius: 20%;          /* округляем кнопку */
+    border: none;                /* отключаем обводку */
+    background: #454c5a; /*          задаем серый цвет кнопки */
+    color: white;                /* задаем белый цвет текста внутри кнопки */
+    font-size: 1.5rem;           /* увеличим размер шрифта */
+    font-family: Arial, Helvetica, sans-serif; /* сменим шрифт */
+    cursor: pointer;             /* при наведении на кнопку курсор будет изменен
+                                    со стрелки на 'указательный палец' */
+    user-select: none;           /* отключаем возможность выделить текст внутри кнопки */
+  }
+  /* hover - это состояние элемента, когда на него наведен курсор */
+  .my-btn:hover {
+    background: #8eadee; /* при наведение курсора на кнопку, она будет окрашена в серый */
+  }
+  
+  /* active - это состояние активации элемента. В случае кнопки - нажатие на нее */
+  .my-btn:active {
+    filter: brightness(130%); /* увеличим интенсивность цвета для эффекта вспышки */
+  }
+  
+  /* селектор для кнопок первостепенных операций */
+  .my-btn.primary { 
+    background: #1349be; /* цвет кнопки оранжевый */
+  }
+  
+  /* селектор для кнопок второстепенных операций */
+  .my-btn.secondary { 
+    background: #EE3F58/*#7996F0; /* цвет кнопки сервый */
+  }
+  
+  /* селектор для кнопки расчета выражения (=) */
+  .my-btn.execute { 
+    width: 110px;          /* сделаем кнопку шире других */
+    border-radius: 20px;   /* подкорректируем округлость */
+  }
+  
+  /* селектор для поля вывода результата */
+  .result { 
+    width: 220px;
+    height: 50px; 
+    border-radius: 12px;
+    margin-bottom: 15px;         /* отступ снизу */
+    padding-right: 10px;         /* выступ справа */
+    background: linear-gradient(182.54deg, #1F50E8 20.95%, #7996F0 134.42%); /* цвет можно задавать и таким образом */
+    text-align: right;           /* примагнитим текст к правой стороне */
+    color: #ffffff;             /* цвет текста белый */
+    font-size: 2rem;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  footer {
+    text-align: center; 
+    margin-top: 20px;
+    font-size: 16px;
+    width: 150px;
+    height: 50px; 
+    color: #666; /* Цвет текста */
+  }
+
+  
+  details {
+    position: absolute; /* Абсолютное позиционирование */
+    top: 5px; /* Отступ сверху */
+    left: 5px; /* Отступ слева */
+    margin-bottom: 10px;
+    background: #2460e1;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%; /* Круглая форма в свернутом состоянии */
+    padding: 10px;
+    height: 30px;
+    width: 30px; /* Ширина и высота равны для круга */
+    overflow: hidden; /* Скрываем содержимое */
+    transition: all 0.3s ease; /* Плавная анимация */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+  details[open]{
+    width: 150px; /* Ширина в развернутом состоянии */
+    border-radius: 10px; /* Закругленные углы */
+    height: auto; /* Автоматическая высота */
+    padding: 15px; /* Увеличенный отступ */
+  }
+
+  summary {
+      font-weight: bold;
+      cursor: pointer;
+  }
+
+  p {
+      margin-top: 10px;
+  }
