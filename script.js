@@ -60,10 +60,18 @@ window.onload = function(){
     document.getElementById("btn_op_plus").onclick = function() { 
         if (a === '') return
         selectedOperation = '+'
+        if (a!=='' && selectedOperation === '+'){
+            a = ((+a) + (+b)).toString();
+            b='';
+        }
     }
     document.getElementById("btn_op_minus").onclick = function() { 
         if (a === '') return
         selectedOperation = '-'
+        if (a!=='' && selectedOperation === '-'){
+            a = ((+a) - (+b)).toString();
+            b='';
+        }
     }
     document.getElementById("btn_op_div").onclick = function() { 
         if (a === '') return
