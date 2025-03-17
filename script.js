@@ -81,7 +81,44 @@ window.onload = function(){
         selectedOperation = null
         outputElement.innerHTML = a
     }
-    
+    document.getElementById("btn_op_cancel").onclick = function(){
+        if (a !== '' && !selectedOperation){
+            a = a.substring(0, a.length - 1);
+        }
+        b = ''
+        selectedOperation = null
+        outputElement.innerHTML = a
+    }
+    document.getElementById("btn_op_sqrt").onclick = function(){
+        if( a!=='' && !selectedOperation){
+            a = ((+a)**(1/2)).toString();
+        }
+        b = ''
+        selectedOperation = null
+        outputElement.innerHTML = a
+    }
+    document.getElementById("btn_op_square").onclick = function(){
+        if( a!=='' && !selectedOperation){
+            a = ((+a)**(2)).toString();
+        }
+        b = ''
+        selectedOperation = null
+        outputElement.innerHTML = a
+    }
+    document.getElementById("btn_op_fucktorial").onclick = function(){
+        let temp = 1;
+        if( a!=='' && !selectedOperation){
+            for (let i =2; i <= (+a);i++){
+                temp*=i;
+            }
+        }
+        a = temp.toString();
+        b = ''
+        selectedOperation = null
+        outputElement.innerHTML = a;
+    }
+
+
     // кнопка очищения
     document.getElementById("btn_op_clear").onclick = function() { 
         a = ''
