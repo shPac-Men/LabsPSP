@@ -77,6 +77,10 @@ window.onload = function(){
         if (a === '') return
         selectedOperation = '/'
     }
+    document.getElementById("btn_op_moli").onclick = function() { 
+        if (a === '') return
+        selectedOperation = 'CO2'
+    }
     document.getElementById("btn_op_percent").onclick = function(){
         if (a === '') return 
         selectedOperation = '%'
@@ -125,7 +129,16 @@ window.onload = function(){
         selectedOperation = null
         outputElement.innerHTML = a;
     }
-
+    // document.getElementById("btn_op_moli").onclick = function(){
+    //     if( a!=='' && b!=='' && !selectedOperation){
+    //         let mol_mass = 12 + 2*16
+    //         let n = (+a)/(mol_mass)
+    //         a=n*8,314*(+b)/101325
+    //     }
+    //     b = ''
+    //     selectedOperation = null
+    //     outputElement.innerHTML = a
+    // }
 
     // кнопка очищения
     document.getElementById("btn_op_clear").onclick = function() { 
@@ -156,6 +169,10 @@ window.onload = function(){
                 break;
             case '%':
                 expressionResult = (+a) /100 * (+b)
+                break;
+            case 'CO2':
+                expressionResult = (+a) * (+b) * 0.0018648
+                //expressionResult = (+b)
                 break;
           
         }
