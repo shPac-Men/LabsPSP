@@ -3,9 +3,10 @@ import { BackButtonComponent } from "../../components/back-button/index.js"
 import { MainPage } from "../main/index.js"
 
 export class ProductPage {
-    constructor(parent, id) {
+    constructor(parent, id,  mainPageState) {
         this.parent = parent
         this.id = id
+        this.mainPageState = mainPageState
     }
 
     getData() {
@@ -31,6 +32,8 @@ export class ProductPage {
 
     clickBack() {
         const mainPage = new MainPage(this.parent)
+        // mainPage.allCards = this.mainPageState.allCards
+        // mainPage.cradCount = this.mainPageState.cradCount
         mainPage.render()
     }
 
