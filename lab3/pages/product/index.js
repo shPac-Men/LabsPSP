@@ -56,6 +56,52 @@ export class ProductPage {
         mainPage.render();
     }
 
+
+    pasportForm() {
+        const formHTML = `
+            <div class="data-form mt-4">
+                <h5>Введите информацию</h5>
+                <div class="mb-3">
+                    <input type="text" class="form-control" 
+                           placeholder="Регион" id="Region">
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" 
+                           placeholder="Подразделение" id="post">
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" 
+                           placeholder="Серия" id="serial">
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" 
+                           placeholder="Номер" id="Number">
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" 
+                           placeholder="Специальный символ" id="simbol">
+                </div>
+                <button class="btn btn-primary" id="submit-data">Отправить</button>
+                <div class="result mt-3" id="form-result"></div>
+            </div>
+        `;
+        
+        this.parent.insertAdjacentHTML('beforeend', formHTML);
+
+        // Обработчик отправки формы
+        document.getElementById('submit-data').addEventListener('click', () => {
+            const Region = document.getElementById('Region').value;
+            const post = document.getElementById('post').value;
+            const serial = document.getElementById('serial').value;
+            const number = document.getElementById('Number').value;
+            const simbol = document.getElementById('simbol').value
+            
+            const result = `Выдан ГУ МВД: ${Region}${simbol}${post}. Серия и номер ${serial} ${simbol} ${number}`;
+            document.getElementById('form-result').textContent = result;
+        });
+    }
+
+
     render() {
         this.parent.innerHTML = '';
         const html = this.getHTML();
@@ -67,5 +113,10 @@ export class ProductPage {
         const data = this.getData();
         const product = new ProductComponent(this.pageRoot);
         product.render(data);
+
+        
+        if (parseInt(this.id) === 2) {
+            this.pasportForm();
+        }
     }
 }
