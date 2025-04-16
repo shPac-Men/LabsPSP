@@ -12,21 +12,26 @@ export class ProductCardComponent {
                         <h5 class="card-title">${data.title}</h5>
                         <p class="card-text">${data.text}</p>
                         <button class="btn btn-primary" id="click-card-${data.id}" data-id="${data.id}">Нажми на меня</button>
+                        <button class="btn btn-danger" id="del-card-${data.id}" data-id="${data.id}">Удалить</button>
                     </div>
                 </div>
             `
         )
     }
     
-    addListeners(data, listener) {
+    addListeners(data, listener, deleter) {
         document
             .getElementById(`click-card-${data.id}`)
             .addEventListener("click", listener)
+        document
+            .getElementById(`del-card-${data.id}`)
+            .addEventListener("click", deleter)
     }
     
-    render(data, listener) {
+
+    render(data, listener, deleter) {
         const html = this.getHTML(data)
         this.parent.insertAdjacentHTML('beforeend', html)
-        this.addListeners(data, listener)
+        this.addListeners(data, listener, deleter)
     }
 }

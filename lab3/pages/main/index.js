@@ -56,7 +56,13 @@ export class MainPage {
         );
         productPage.render();
     }
-    
+
+    clickDelete(e){
+        const cardId = parseInt(e.target.dataset.id)
+        MainPage.cards = MainPage.cards.filter(card => card.id !== cardId);
+        this.render()
+    }
+
     clickCopy() {
         const data = this.getData();
         const item = {...data[0], id: ++MainPage.cardCount}; // создаем уникальное id
@@ -67,7 +73,7 @@ export class MainPage {
     renderCards(cards) {
         cards.forEach((item) => {
             const productCard = new ProductCardComponent(this.pageRoot);
-            productCard.render(item, this.clickCard.bind(this));
+            productCard.render(item, this.clickCard.bind(this), this.clickDelete.bind(this));
         });
     }
 
