@@ -10,12 +10,31 @@ export class ProductPage {
     }
 
     getData() {
-        return {
-            id: 1,
-            src: "https://i.pinimg.com/originals/c9/ea/65/c9ea654eb3a7398b1f702c758c1c4206.jpg",
-            title: `Акция ${this.id}`,
-            text: "Такой акции вы еще не видели"
-        };
+        const allData = [
+            {
+                id: 1,
+                src: "https://gu-st.ru/content/Banner/large_family_e_card_mobile.svg",
+                title: `Услуга 1`,
+                text: "Удостоверение многодетных"
+            },
+            {
+                id: 2,
+                src: "https://gu-st.ru/content/banner_main_page/gu_new_regions.svg",
+                title: `Услуга 2`,
+                text: "Замена паспорта"
+            },
+            {
+                id: 3,
+                src: "https://gu-st.ru/content/banner_main_page/Millitary_service_contract.svg",
+                title: `Услуга 3`,
+                text: "Служба по контракту"
+            }
+        ];
+    
+        // Возвращаем данные для текущего id
+        return allData.find(item => item.id === parseInt(this.id)) || allData[0]; 
+        //.find() - метод массива, который ищет первый элемент, удовлетворяющий условию
+        //item => item.id === parseInt(this.id) - проверяет, совпадает ли ID элемента с переданным ID (предварительно преобразованным в число)
     }
 
     get pageRoot() {
