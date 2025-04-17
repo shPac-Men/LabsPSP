@@ -7,6 +7,29 @@ export class ProductPage {
         this.parent = parent;
         this.id = id;
         this.mainPageState = mainPageState; // Сохраняем состояние MainPage
+
+        this.names = [
+            {firstName: "Анна", lastName: "Сокол"},     // Палиндром имя
+            {firstName: "Мария", lastName: "Ротор"},    // Палиндром фамилия
+            {firstName: "Евгения", lastName: "Иванова"},
+            {firstName: "Ольга", lastName: "Кайак"},    // Палиндром фамилия
+            {firstName: "Татьяна", lastName: "Петрова"},
+            {firstName: "Алла", lastName: "Смирнова"},  // Палиндром имя
+            {firstName: "Наталья", lastName: "Шалаш"},  // Палиндром фамилия
+            {firstName: "Елена", lastName: "Кузнецова"},
+            {firstName: "Ирина", lastName: "Поп"},      // Палиндром фамилия
+            {firstName: "Оксана", lastName: "Федорова"},
+            {firstName: "Людмила", lastName: "Тенет"},  // Палиндром фамилия
+            {firstName: "Светлана", lastName: "Морозова"},
+            {firstName: "Ангелина", lastName: "Дед"},   // Палиндром фамилия
+            {firstName: "Виктория", lastName: "Ковалева"},
+            {firstName: "Юлия", lastName: "Анна"},      // Палиндром фамилия
+            {firstName: "Ксения", lastName: "Волкова"},
+            {firstName: "Дарья", lastName: "Заз"},      // Палиндром фамилия
+            {firstName: "Алина", lastName: "Никитина"},
+            {firstName: "Валерия", lastName: "Шарш"},   // Палиндром фамилия
+            {firstName: "Арина", lastName: "Соловьева"}
+        ];
     }
 
     getData() {
@@ -57,7 +80,7 @@ export class ProductPage {
     }
 
 
-    pasportForm() {
+    renderPasportForm() {
         const formHTML = `
             <div class="data-form mt-4">
                 <h5>Введите информацию</h5>
@@ -88,7 +111,6 @@ export class ProductPage {
         
         this.parent.insertAdjacentHTML('beforeend', formHTML);
 
-        // Обработчик отправки формы
         document.getElementById('submit-data').addEventListener('click', () => {
             const Region = document.getElementById('Region').value;
             const post = document.getElementById('post').value;
@@ -101,6 +123,27 @@ export class ProductPage {
         });
     }
 
+
+    renderPolinimForm(){
+        const formHTML =  `
+        <div class="data-form mt-4">
+            <h5>Проверка полинтромных имен или фамилий</h5>
+            <button class="btn btn-primary" id="CheckPoli">Просмотреть</button>
+            <div class="result mt-3" id="form-result"></div>
+        </div>
+    `;
+
+    this.parent.insertAdjacentHTML('beforeend', formHTML);
+
+    document.getElementById('CheckPoli').addEventListener('click', () => {
+        this.names.forEach(person => {
+    
+        });
+        
+        const result = 0;
+        document.getElementById('form-result').textContent = result;
+    });
+    }
 
     render() {
         this.parent.innerHTML = '';
@@ -116,7 +159,11 @@ export class ProductPage {
 
         
         if (parseInt(this.id) === 2) {
-            this.pasportForm();
+            this.renderPasportForm();
+        }
+
+        if(parseInt(this.id) === 1 ){
+            this.renderPolinimForm();
         }
     }
 }
