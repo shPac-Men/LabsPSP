@@ -38,8 +38,14 @@ export class MainPage {
             {
                 id: 3,
                 src: "https://gu-st.ru/content/banner_main_page/Millitary_service_contract.svg",
-                title: "Услсуга",
+                title: "Услуга",
                 text: "Служба по контракту"
+            },
+            {
+                id: 4,
+                src: "https://gu-st.ru/content/Banner/soldier_support.svg",
+                title: "Подарок за вход",
+                text: "Забрать приз"
             },
         ];
     }
