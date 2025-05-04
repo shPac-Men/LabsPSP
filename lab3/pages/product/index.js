@@ -9,6 +9,11 @@ export class ProductPage {
         this.mainPageState = mainPageState; // Сохраняем состояние MainPage
     }
 
+
+    getDataDailyPrize() {
+        return Array.from({length: 40}, () => Math.floor(Math.random() * 2));
+    }
+
     getDataMnogodet(){
         const data = [
             {firstName: "Анна", lastName: "Сокол"},     // Палиндром имя
@@ -55,13 +60,13 @@ export class ProductPage {
                 id: 3,
                 src: "https://gu-st.ru/content/banner_main_page/Millitary_service_contract.svg",
                 title: `Услуга 3`,
-                text: "Служба по контракту"
+                text: "Служба по контракту <p>Присоединяйся к СВОим! Заполни форму</p>"
             },
             {
                 id: 4,
                 src: "https://gu-st.ru/content/Banner/soldier_support.svg",
                 title: `Услуга 4`,
-                text: "Подарок за вход"
+                text: "Подарок за вход <p>Заходи каждый день и получай призы</p>"
             }
         ];
     
@@ -133,6 +138,147 @@ export class ProductPage {
             document.getElementById('form-result').textContent = result;
         });
     }
+
+    checkday(data) {
+        let max = 0;
+        let current = 0;
+        
+        for (let i = 0; i < data.length; i++) {
+            if (data[i] === 1) {
+                current++;
+                if (current > max) {
+                    max = current;
+                }
+            } else {
+                current = 0;
+            }
+        }
+        
+        return [max, current]; 
+    }
+
+    renderDailyPrizeForm() {
+        const temp = this.getDataDailyPrize();
+        const data = this.checkday(temp);
+        
+        const formHTML = `
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5>Приз за ежедневный вход</h5>
+                        <p>Забери приз! Максимум подряд ${data[0]} дней</p>
+                        <p>Текущая серия ${data[1] + 1}</p>
+                        <!-- <p> ${temp.map(x => x.toString()).join("")}</p> -->
+                        <button class="btn btn-primary" id="btn_prize">Получить</button>
+                        <div id="prize-result" class="mt-2"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+    
+        this.parent.insertAdjacentHTML('beforeend', formHTML);
+        
+        document.getElementById('btn_prize').addEventListener('click', () => {
+            const prizeResult = document.getElementById('prize-result');
+            prizeResult.textContent = `Ваш код: ${Array.from({length: 20}, () => Math.floor(Math.random() * 10)).join('')}`;
+        });
+    }
+
+    checkMilForm(arr){
+        for(let i =0; i<3; i++){
+            if(arr[i] !== undefined &&
+                arr[i]  !== null &&
+                arr[i]  !== false &&
+                arr[i]  !== 0 &&
+                arr[i]  !== ''){
+                    
+                }
+                else{
+                    return  'Ошибка заполнения'
+                }
+        }
+        return ''
+    }
+
+
+    erase(arr) {
+        return arr.filter(item => 
+            item !== undefined &&
+            item !== null &&
+            item !== false &&
+            item !== 0 &&
+            item !== ' '
+        );
+    }
+
+    renderMilitForm(){
+        const formHTML = `
+            <div class="data-form mt-4">
+            <h5>Введите информацию</h5>
+            <p>* обозначены поля, обязательные к заполнению</p>
+            <div class="text-danger" id="error"></div>
+            <div class="mb-3">
+                <input type="text" class="form-control" 
+                    placeholder="Город*" id="City">
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" 
+                    placeholder="Фамилимя*" id="lastname">
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" 
+                    placeholder="Имя*" id="firstname">
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" 
+                    placeholder="Отчество" id="Number">
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" 
+                    placeholder="Предпочитаемый род войск" id="army">
+            </div>
+            <button class="btn btn-primary" id="submit-data">Отправить</button>
+            <div class="result mt-3" id="form-result"></div>
+        </div>
+    `;
+
+    this.parent.insertAdjacentHTML('beforeend', formHTML);
+
+    
+    document.getElementById('submit-data').addEventListener('click', () => {
+        let data = [];
+        data[0] = document.getElementById('City').value;
+        data[1] = document.getElementById('lastname').value;
+        data[2] = document.getElementById('firstname').value;
+        data[3] = document.getElementById('Number').value;
+        data[4] = document.getElementById('army').value
+
+        const error =this.checkMilForm(data);
+        document.getElementById('error').textContent = error;
+
+        //result = ` Заявление отправлено в военомат по г.${data[0]} от имени:${data[1]} ${data[2]}</div>`
+
+        if(!error){
+            const cleanedData = this.erase(data);
+        // Формируем результат только из заполненных полей
+        if(cleanedData.length === 3){
+            const result = `Заявление отправлено в военкомат г.${cleanedData[0]} от ${cleanedData[1]} ${cleanedData[2]}`;
+            document.getElementById('form-result').textContent = result;
+        }
+        if(cleanedData.length === 4){
+            const result = `Заявление отправлено в военкомат г.${cleanedData[0]} от ${cleanedData[1]} ${cleanedData[2]} ${cleanedData[3]}`;
+            document.getElementById('form-result').textContent = result;
+        }
+        if(cleanedData.length === 5){
+            const result = `Заявление отправлено в военкомат г.${cleanedData[0]} от ${cleanedData[1]} ${cleanedData[2]} ${cleanedData[3]} предпочитаемый род войск: ${cleanedData[4]}`;
+            document.getElementById('form-result').textContent = result;
+        }
+        } else {
+            document.getElementById('form-result').textContent = ''; // Очищаем результат при ошибке
+        }
+    });
+    }
+
 
     renderPolinimForm() {
         const data = this.getDataMnogodet();
@@ -229,6 +375,14 @@ export class ProductPage {
 
         if(parseInt(this.id) === 1 ){
             this.renderPolinimForm();
+        }
+
+        if(parseInt(this.id) === 3){
+            this.renderMilitForm();
+        }
+
+        if(parseInt(this.id) === 4){
+            this.renderDailyPrizeForm();
         }
     }
 }
