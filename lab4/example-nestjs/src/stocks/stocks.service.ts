@@ -19,9 +19,9 @@ export class StocksService {
 
     // для простоты новый id = текущее количество карточек + 1
     const stock = { ...createStockDto, 
-      src: "https://i.pinimg.com/originals/c9/ea/65/c9ea654eb3a7398b1f702c758c1c4206.jpg",
-      title: "Акция",
-      text: "Такой акции вы еще не видели",
+      // src: "https://i.pinimg.com/originals/c9/ea/65/c9ea654eb3a7398b1f702c758c1c4206.jpg",
+      // title: "Акция",
+      // text: "Такой акции вы еще не видели",
       id: stocks.length + 1
      };
 
