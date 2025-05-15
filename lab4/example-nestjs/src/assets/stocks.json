@@ -1,26 +1,27 @@
 [
   {
     "id": 1,
-    "src": "https://i.pinimg.com/originals/c9/ea/65/c9ea654eb3a7398b1f702c758c1c4206.jpg",
-    "title": "Акция 1",
-    "text": "Такой акции вы еще не видели 1"
+    "src": "https://gu-st.ru/content/Banner/large_family_e_card_mobile.svg",
+    "title": "Услуга",
+    "text": "Удостоверение многодетных"
   },
   {
     "id": 2,
-    "src": "https://i.pinimg.com/originals/c9/ea/65/c9ea654eb3a7398b1f702c758c1c4206.jpg",
-    "title": "Акция 2",
-    "text": "Такой акции вы еще не видели 2"
+    "src": "https://gu-st.ru/content/banner_main_page/gu_new_regions.svg",
+    "title": "Услуга",
+    "text": "Замена паспорта"
   },
   {
     "id": 3,
-    "src": "https://i.pinimg.com/originals/c9/ea/65/c9ea654eb3a7398b1f702c758c1c4206.jpg",
-    "title": "Акция 3",
-    "text": "Такой акции вы еще не видели 3"
+    "src": "https://gu-st.ru/content/banner_main_page/Millitary_service_contract.svg",
+    "title": "Услуга",
+    "text": "Служба по контракту"
   },
   {
     "id": 4,
-    "src": "https://i.pinimg.com/originals/c9/ea/65/c9ea654eb3a7398b1f702c758c1c4206.jpg",
-    "title": "Акция 4",
-    "text": "Такой акции вы еще не видели 4"
+    "src": "https://gu-st.ru/content/Banner/soldier_support.svg",
+    "title": "Подарок за вход",
+    "text": "Забрать приз"
   }
 ]
+
