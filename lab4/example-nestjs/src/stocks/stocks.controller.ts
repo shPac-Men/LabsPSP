@@ -14,8 +14,8 @@ export class StocksController {
   }
 
   @Get()
-  findAll(@Query('title') title?: string): Stock[] {
-    return this.stocksService.findAll(title);
+  findAll(@Query('text') text?: string): Stock[] {
+    return this.stocksService.findAll(text);
   }
 
   @Get(':id')

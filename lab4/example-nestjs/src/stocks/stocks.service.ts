@@ -30,12 +30,12 @@ export class StocksService {
   }
 
 
-  findAll(title?: string): Stock[] {
+  findAll(text?: string): Stock[] {
     const stocks = this.fileService.read();
 
-    return title
+    return text
       ? stocks.filter((stock) =>
-          stock.title.toLowerCase().includes(title.toLowerCase()),
+          stock.text.toLowerCase().includes(text.toLowerCase()),
         )
       : stocks;
   }
