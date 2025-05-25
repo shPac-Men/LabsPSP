@@ -1,6 +1,7 @@
 import { ProductComponent } from "../../components/product/index.js";
 import { BackButtonComponent } from "../../components/back-button/index.js";
 import { MainPage } from "../main/index.js";
+import { HomeButtonComponent } from "../../components/home-button/index.js";
 
 export class ProductPage {
     constructor(parent, id, mainPageState = null) {
@@ -56,11 +57,23 @@ export class ProductPage {
         mainPage.render();
     }
 
+    clickHome(){
+        const mainPage = new MainPage(this.parent)
+        if (this.mainPageState){
+            MainPage.cards = this.mainPageState.cards;
+            MainPage.cardCount = this.mainPageState.cardCount;
+        }
+        mainPage.render();
+    }
+
     render() {
         this.parent.innerHTML = '';
         const html = this.getHTML();
         this.parent.insertAdjacentHTML('beforeend', html);
     
+        const homeButton = new HomeButtonComponent(this.pageRoot);
+        homeButton.render(this.clickHome.bind(this))
+        
         const backButton = new BackButtonComponent(this.pageRoot);
         backButton.render(this.clickBack.bind(this));
 

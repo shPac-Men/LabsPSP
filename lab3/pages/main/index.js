@@ -2,6 +2,8 @@ import { ButtonComponent } from "../../components/button/index.js";
 import { ProductCardComponent } from "../../components/product-card/index.js";
 import { CopyButtonComponent } from "../../components/copy-button/index.js";
 import { ProductPage } from "../product/index.js";
+import { BackButtonComponent } from "../../components/back-button/index.js";
+import { HomeButtonComponent } from "../../components/home-button/index.js";
 
 export class MainPage {
     static cards = [];
@@ -63,6 +65,16 @@ export class MainPage {
         this.render()
     }
 
+    clickHome(){
+        const mainPage = new MainPage(this.parent)
+        //if (this.mainPageState){
+            //MainPage.cards = this.mainPageState.cards;
+        MainPage.cards.length = 0;
+        MainPage.cardCount = 0; //this.mainPageState.cardCount;
+        //}
+        mainPage.render();
+    }
+
     clickCopy() {
         const data = this.getData();
         const item = {...data[0], id: ++MainPage.cardCount}; // создаем уникальное id
@@ -82,6 +94,9 @@ export class MainPage {
         const html = this.getHTML();
         this.parent.insertAdjacentHTML('beforeend', html);
 
+        // const homeButton = new HomeButtonComponent(this.pageRoot)
+        // homeButton.render(this.clickHome.bind(this))
+
         // Если карточки уже есть в статическом хранилище - используем их
         if (MainPage.cards.length > 0) {
             this.renderCards(MainPage.cards);
@@ -95,5 +110,11 @@ export class MainPage {
 
         const copyButton = new CopyButtonComponent(this.pageRoot);
         copyButton.render(this.clickCopy.bind(this));
+
+        const homeButton = new HomeButtonComponent(this.pageRoot)
+        homeButton.render(this.clickHome.bind(this), { 
+        fixed: true,  // Добавляем параметр для фиксации
+        left: '150px' // Отступ слева (чтобы не наезжала на "Копировать")
+    });
     }
 }
