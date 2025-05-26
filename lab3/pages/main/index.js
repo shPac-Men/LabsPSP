@@ -4,6 +4,11 @@ import { CopyButtonComponent } from "../../components/copy-button/index.js";
 import { ProductPage } from "../product/index.js";
 import { BackButtonComponent } from "../../components/back-button/index.js";
 import { HomeButtonComponent } from "../../components/home-button/index.js";
+import { ajax } from "../../modules/ajax.js";
+import { stockUrls } from "../../modules/stockUrls.js";
+import { stockUrls } from "../../modules/stockUrls.js";
+
+stockUrls.getStocks();
 
 export class MainPage {
     static cards = [];
@@ -23,28 +28,34 @@ export class MainPage {
         `;
     }
         
+    // getData() {
+    //     return [
+    //         {
+    //             id: 1,
+    //             src: "https://gu-st.ru/content/Banner/large_family_e_card_mobile.svg",
+    //             title: "Услуга",
+    //             text: "Удостоверение многодетных"
+    //         },
+    //         {
+    //             id: 2,
+    //             src: "https://gu-st.ru/content/banner_main_page/gu_new_regions.svg",
+    //             title: "Услуга",
+    //             text: "Замена паспорта"
+    //         },
+    //         {
+    //             id: 3,
+    //             src: "https://gu-st.ru/content/banner_main_page/Millitary_service_contract.svg",
+    //             title: "Услсуга",
+    //             text: "Служба по контракту"
+    //         },
+    //     ];
+    // }
     getData() {
-        return [
-            {
-                id: 1,
-                src: "https://gu-st.ru/content/Banner/large_family_e_card_mobile.svg",
-                title: "Услуга",
-                text: "Удостоверение многодетных"
-            },
-            {
-                id: 2,
-                src: "https://gu-st.ru/content/banner_main_page/gu_new_regions.svg",
-                title: "Услуга",
-                text: "Замена паспорта"
-            },
-            {
-                id: 3,
-                src: "https://gu-st.ru/content/banner_main_page/Millitary_service_contract.svg",
-                title: "Услсуга",
-                text: "Служба по контракту"
-            },
-        ];
+        ajax.get(stockUrls.getStocks(), (data) => {
+            this.renderData(data);
+        })
     }
+    
     
     clickCard(e) {
         const cardId = e.target.dataset.id;
@@ -82,30 +93,35 @@ export class MainPage {
         this.renderCards([item]);
     }
 
-    renderCards(cards) {
-        cards.forEach((item) => {
-            const productCard = new ProductCardComponent(this.pageRoot);
-            productCard.render(item, this.clickCard.bind(this), this.clickDelete.bind(this));
-        });
+    // renderCards(cards) {
+    //     cards.forEach((item) => {
+    //         const productCard = new ProductCardComponent(this.pageRoot);
+    //         productCard.render(item, this.clickCard.bind(this), this.clickDelete.bind(this));
+    //     });
+    // }
+    renderData(items) {
+    items.forEach((item) => {
+        const productCard = new ProductCardComponent(this.pageRoot)
+        productCard.render(item, this.clickCard.bind(this))
+    })
     }
 
     render() {
         this.parent.innerHTML = '';
         const html = this.getHTML();
         this.parent.insertAdjacentHTML('beforeend', html);
-
-        // const homeButton = new HomeButtonComponent(this.pageRoot)
-        // homeButton.render(this.clickHome.bind(this))
+        this.getData()//из лаб 5 хз что это
 
         // Если карточки уже есть в статическом хранилище - используем их
         if (MainPage.cards.length > 0) {
-            this.renderCards(MainPage.cards);
+            this.renderData(MainPage.cards); // было рендер кардс
         } else {
             // Иначе загружаем начальные данные
             const data = this.getData();
             MainPage.cards = [...data];
             MainPage.cardCount = data.length;
-            this.renderCards(data);
+            //this.renderCards(data);
+            this.renderData(MainPage.cards);
         }
 
         const copyButton = new CopyButtonComponent(this.pageRoot);
