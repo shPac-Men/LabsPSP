@@ -6,7 +6,6 @@ import { BackButtonComponent } from "../../components/back-button/index.js";
 import { HomeButtonComponent } from "../../components/home-button/index.js";
 import { ajax } from "../../modules/ajax.js";
 import { stockUrls } from "../../modules/stockUrls.js";
-import { stockUrls } from "../../modules/stockUrls.js";
 
 stockUrls.getStocks();
 
@@ -113,16 +112,16 @@ export class MainPage {
         this.getData()//из лаб 5 хз что это
 
         // Если карточки уже есть в статическом хранилище - используем их
-        if (MainPage.cards.length > 0) {
-            this.renderData(MainPage.cards); // было рендер кардс
-        } else {
-            // Иначе загружаем начальные данные
-            const data = this.getData();
-            MainPage.cards = [...data];
-            MainPage.cardCount = data.length;
-            //this.renderCards(data);
-            this.renderData(MainPage.cards);
-        }
+        // if (MainPage.cards.length > 0) {
+        //     this.renderData(MainPage.cards); // было рендер кардс
+        // } else {
+        //     // Иначе загружаем начальные данные
+        //     const data = this.getData();
+        //     MainPage.cards = [...data];
+        //     MainPage.cardCount = data.length;
+        //     //this.renderCards(data);
+        //     this.renderData(MainPage.cards);
+        // }
 
         const copyButton = new CopyButtonComponent(this.pageRoot);
         copyButton.render(this.clickCopy.bind(this));

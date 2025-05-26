@@ -4,6 +4,7 @@ import { MainPage } from "../main/index.js";
 import { HomeButtonComponent } from "../../components/home-button/index.js";
 import { ajax } from "../../modules/ajax.js";
 import { stockUrls } from "../../modules/stockUrls.js";
+import { ProductCardComponent } from "../../components/product-card/index.js";
 
 export class ProductPage {
     constructor(parent, id, mainPageState = null) {
@@ -40,13 +41,13 @@ export class ProductPage {
     //     //item => item.id === parseInt(this.id) - проверяет, совпадает ли ID элемента с переданным ID (предварительно преобразованным в число)
     // }
     getData() {
-        ajax.get(stockUrls.getStocks(), (data) => {
-            this.renderData(data);
-        })
-    }
+        ajax.get(stockUrls.getStockById(this.id), (data) => {
+        this.renderData(data);
+    })
+}
 
     renderData(item) {
-        const product = new ProductCardComponent(this.pageRoot, false)
+        const product = new ProductCardComponent(this.pageRoot)
         product.render(item)
     }
 
