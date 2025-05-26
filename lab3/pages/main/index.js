@@ -85,17 +85,27 @@ export class MainPage {
         const html = this.getHTML();
         this.parent.insertAdjacentHTML('beforeend', html);
 
-        try {
-            // Загружаем данные
+        if (MainPage.cards.length > 0) {
+            this.renderData(MainPage.cards);
+        } else {
+            // Иначе загружаем начальные данные
             const data = await this.getData();
             MainPage.cards = [...data];
             MainPage.cardCount = data.length;
-            
-            // Рендерим все карточки
-            this.renderData(MainPage.cards);
-        } catch (error) {
-            console.error("Ошибка загрузки данных:", error);
+            this.renderData(data);
         }
+
+        // try {
+        //     // Загружаем данные
+        //     const data = await this.getData();
+        //     MainPage.cards = [...data];
+        //     MainPage.cardCount = data.length;
+            
+        //     // Рендерим все карточки
+        //     this.renderData(MainPage.cards);
+        // } catch (error) {
+        //     console.error("Ошибка загрузки данных:", error);
+        // }
 
         // Добавляем кнопки
         const copyButton = new CopyButtonComponent(this.pageRoot);

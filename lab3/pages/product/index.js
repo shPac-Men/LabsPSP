@@ -13,41 +13,27 @@ export class ProductPage {
         this.mainPageState = mainPageState; // Сохраняем состояние MainPage
     }
 
-    // getData() {
-    //     const allData = [
-    //         {
-    //             id: 1,
-    //             src: "https://gu-st.ru/content/Banner/large_family_e_card_mobile.svg",
-    //             title: `Услуга 1`,
-    //             text: "Удостоверение многодетных"
-    //         },
-    //         {
-    //             id: 2,
-    //             src: "https://gu-st.ru/content/banner_main_page/gu_new_regions.svg",
-    //             title: `Услуга 2`,
-    //             text: "Замена паспорта"
-    //         },
-    //         {
-    //             id: 3,
-    //             src: "https://gu-st.ru/content/banner_main_page/Millitary_service_contract.svg",
-    //             title: `Услуга 3`,
-    //             text: "Служба по контракту"
-    //         }
-    //     ];
-    
-    //     // Возвращаем данные для текущего id
-    //     return allData.find(item => item.id === parseInt(this.id)) || allData[0]; 
-    //     //.find() - метод массива, который ищет первый элемент, удовлетворяющий условию
-    //     //item => item.id === parseInt(this.id) - проверяет, совпадает ли ID элемента с переданным ID (предварительно преобразованным в число)
-    // }
     getData() {
-        ajax.get(stockUrls.getStockById(this.id), (data) => {
-        this.renderData(data);
-    })
-}
+        ajax.get(stockUrls.getStockById(this.id), (data, status) => {
+            if (status === 200 && data) {
+                // Если карточка найдена - рендерим её
+                this.renderData(data);
+            } else {
+                // Если нет - рендерим первую карточку
+                const fallbackData = {
+                id: 1,
+                src: "https://gu-st.ru/content/Banner/large_family_e_card_mobile.svg",
+                title: "Услуга 1",
+                text: "Удостоверение многодетных"
+            };
+            this.renderData(fallbackData);
+            }
+        });
+    }
+
 
     renderData(item) {
-        const product = new ProductCardComponent(this.pageRoot)
+        const product = new ProductComponent(this.pageRoot) // было  ProductCardComponent
         product.render(item)
     }
 
