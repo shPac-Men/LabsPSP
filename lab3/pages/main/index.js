@@ -97,14 +97,12 @@ export class MainPage {
     }
 
     clickAdd() {
-    const addEditPage = new AddEditPage(this.parent, {
-        onSave: (newItem) => {
-            MainPage.cards.push(newItem);
-            MainPage.cardCount++;
-            this.render();
-        }
-    });
-    addEditPage.render();
+        const addEditPage = new AddEditPage(this.parent, {
+            onSave: (newItem) => {
+                this.render();
+            }
+        });
+        addEditPage.render();
     }
 
     renderData(items) {
