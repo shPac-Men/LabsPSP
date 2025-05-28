@@ -132,7 +132,7 @@ import { HomeButtonComponent } from "../../components/home-button/index.js";
 import { ajax } from "../../modules/ajax.js";
 import { stockUrls } from "../../modules/stockUrls.js";
 import { AddButtonComponent } from "../../components/add-button/indexx.js";
-// import { addEditPage } from "../../components/add-button/indexx.js";
+import { AddEditPage } from "../add/index.js";
 
 export class MainPage {
     static cards = [];
@@ -158,6 +158,54 @@ export class MainPage {
                 resolve(Array.isArray(data) ? data : []);
             });
         });
+    }
+
+    // async clickCopy() {
+
+    //     // Получаем текущие данные
+    //     const data = await this.getData();
+    //     if (data.length === 0) {
+    //         console.warn("Нет данных для копирования");
+    //         return;
+    //     }
+            
+    //     // Создаем копию первой карточки с новым ID
+    //     const itemToCopy = {...data[0], id: ++MainPage.cardCount};
+            
+    //     // Добавляем в массив и рендерим
+    //     MainPage.cards.push(itemToCopy);
+    //     ajax.post(stockUrls.getStocks(),,)
+    //     this.renderData([itemToCopy]);
+    // }
+    async clickCopy() {
+    try {
+        // Получаем текущие данные
+        const data = await this.getData();
+        if (data.length === 0) {
+            console.warn("Нет данных для копирования");
+            return;
+        }
+        
+        // Создаем копию первой карточки с новым ID
+        const itemToCopy = {...data[0], id: ++MainPage.cardCount};
+        
+        // Отправляем копию на сервер
+        await new Promise((resolve, reject) => {
+            ajax.post(stockUrls.createStock(), itemToCopy, (response) => {
+                MainPage.cards.push(response); // Используем данные с сервера (с актуальным ID)
+                MainPage.cardCount++ ;
+                this.renderData([response]);
+                resolve();
+            }, (error) => {
+                console.error('Ошибка при копировании:', error);
+                reject(error);
+            });
+        });
+        
+    } catch (error) {
+        console.error('Ошибка в процессе копирования:', error);
+        // Можно добавить уведомление пользователю об ошибке
+    }
     }
     
     clickCard(e) {
@@ -196,23 +244,6 @@ export class MainPage {
     addEditPage.render();
     }
 
-    async clickCopy() {
-
-        // Получаем текущие данные
-        const data = await this.getData();
-        if (data.length === 0) {
-            console.warn("Нет данных для копирования");
-            return;
-        }
-            
-        // Создаем копию первой карточки с новым ID
-        const itemToCopy = {...data[0], id: ++MainPage.cardCount};
-            
-        // Добавляем в массив и рендерим
-        MainPage.cards.push(itemToCopy);
-        this.renderData([itemToCopy]);
-    }
-
     renderData(items) {
         items.forEach((item) => {
             const productCard = new ProductCardComponent(this.pageRoot);
@@ -241,7 +272,8 @@ export class MainPage {
         const homeButton = new HomeButtonComponent(this.pageRoot);
         homeButton.render(this.clickHome.bind(this), { 
             fixed: true,
-            left: '150px'
+            left: '0px',
+            top: "0px"
         });
 
         const addButton = new AddButtonComponent(this.pageRoot);

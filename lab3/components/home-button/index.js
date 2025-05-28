@@ -7,7 +7,7 @@ export class HomeButtonComponent {
     getHTML(options = {}) {
         // Если передан параметр fixed, добавляем стиль
         const fixedStyle = options.fixed 
-            ? `position: fixed; bottom: 20px; left: ${options.left || '20px'};` 
+            ? `position: fixed; top: ${options.top || '20px'}; left: ${options.left || '20px'};` 
             : '';
 
         return `

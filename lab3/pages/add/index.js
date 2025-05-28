@@ -1,5 +1,8 @@
 import { ajax } from "../../modules/ajax.js";
 import { stockUrls } from "../../modules/stockUrls.js";
+import { MainPage } from "../main/index.js";
+import { BackButtonComponent } from "../../components/back-button/index.js";
+import { HomeButtonComponent } from "../../components/home-button/index.js";
 
 export class AddEditPage {
     constructor(parent, callbacks = {}) {
@@ -9,6 +12,7 @@ export class AddEditPage {
     
     getHTML() {
         return `
+        <div id="product-page">
             <div class="container mt-5">
                 <h2>Добавить новый товар</h2>
                 <form id="add-edit-form" class="needs-validation" novalidate>
@@ -32,9 +36,16 @@ export class AddEditPage {
                     </div>
                 </form>
             </div>
+            </div>
         `;
     }
     
+
+    get pageRoot() {
+        return document.getElementById('product-page');
+    }
+
+
     setupEventListeners() {
         const form = document.getElementById('add-edit-form');
         const cancelBtn = document.getElementById('cancel-btn');
@@ -61,6 +72,24 @@ export class AddEditPage {
         });
     }
 
+    clickBack() {
+        const mainPage = new MainPage(this.parent); // Восстанавливаем MainPage с сохраненным состоянием
+        if (this.mainPageState) {
+            MainPage.cards = this.mainPageState.cards;
+            MainPage.cardCount = this.mainPageState.cardCount;
+        }
+        mainPage.render();
+    }
+
+    clickHome(){
+        const mainPage = new MainPage(this.parent)
+        if (this.mainPageState){
+            MainPage.cards = this.mainPageState.cards;
+            MainPage.cardCount = this.mainPageState.cardCount;
+        }
+        mainPage.render();
+    }
+
     handleFormSubmit() {
         const newItem = {
             title: document.getElementById('product-title').value,
@@ -78,7 +107,22 @@ export class AddEditPage {
     }
 
     render() {
-        this.parent.innerHTML = this.getHTML();
-        this.setupEventListeners();
+        this.parent.innerHTML = '';
+        
+        const html = this.getHTML();
+        this.parent.insertAdjacentHTML('beforeend', html);
+        
+        // this.parent.innerHTML = this.getHTML();
+        // this.setupEventListeners();
+
+        const homeButton = new HomeButtonComponent(this.pageRoot);
+        homeButton.render(this.clickHome.bind(this), { 
+            fixed: true,
+            left: '0px',
+            top: '0px'
+        });
+        
+        const backButton = new BackButtonComponent(this.pageRoot);
+        backButton.render(this.clickBack.bind(this));
     }
 }
