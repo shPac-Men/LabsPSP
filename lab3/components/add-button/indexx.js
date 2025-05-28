@@ -1,21 +1,25 @@
-
-export class HomeButtonComponent {
-    constructor(parent) {
+export class AddButtonComponent{
+    constructor(parent){
         this.parent = parent;
     }
 
+    addListeners(listener) {
+        document
+            .getElementById("add-button")
+            .addEventListener("click", listener)
+    }
+
     getHTML(options = {}) {
-        // Если передан параметр fixed, добавляем стиль
         const fixedStyle = options.fixed 
             ? `position: fixed; bottom: 20px; left: ${options.left || '20px'};` 
             : '';
 
         return `
-            <button id="home-button" 
+            <button id="add-button" 
                     class="btn btn-primary" 
                     type="button"
                     style="${fixedStyle}">
-                Домой
+                Добавить
             </button>
         `;
     }
@@ -23,6 +27,7 @@ export class HomeButtonComponent {
     render(listener, options = {}) {
         const html = this.getHTML(options);
         this.parent.insertAdjacentHTML('beforeend', html);
-        document.getElementById("home-button").addEventListener("click", listener);
+        document.getElementById("add-button").addEventListener("click", listener);
     }
 }
+
