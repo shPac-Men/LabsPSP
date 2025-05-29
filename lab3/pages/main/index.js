@@ -1,146 +1,85 @@
-import { ProductCardComponent } from "../../components/product-card/index.js";
-import { CopyButtonComponent } from "../../components/copy-button/index.js";
-import { ProductPage } from "../product/index.js";
+import { ProductComponent } from "../../components/product/index.js";
+import { BackButtonComponent } from "../../components/back-button/index.js";
+import { MainPage } from "../main/index.js";
 import { HomeButtonComponent } from "../../components/home-button/index.js";
 import { ajax } from "../../modules/ajax.js";
 import { stockUrls } from "../../modules/stockUrls.js";
-import { AddButtonComponent } from "../../components/add-button/indexx.js";
-import { AddEditPage } from "../add/index.js";
+import { ProductCardComponent } from "../../components/product-card/index.js";
 
-export class MainPage {
-    static cards = [];
-    static cardCount = 0;
-
-    constructor(parent) {
+export class ProductPage {
+    constructor(parent, id, mainPageState = null) {
         this.parent = parent;
+        this.id = id;
+        this.mainPageState = mainPageState; // Сохраняем состояние MainPage
     }
-    
+
+    getData() {
+        ajax.get(stockUrls.getStockById(this.id), (data, status) => {
+            if (status === 200 && data) {
+                // Если карточка найдена - рендерим её
+                this.renderData(data);
+            } else {
+                // Если нет - рендерим первую карточку
+                const fallbackData = {
+                id: 1,
+                src: "https://gu-st.ru/content/Banner/large_family_e_card_mobile.svg",
+                title: "Услуга 1",
+                text: "Удостоверение многодетных"
+            };
+            this.renderData(fallbackData);
+            }
+        });
+    }
+
+
+    renderData(item) {
+        const product = new ProductComponent(this.pageRoot) // было  ProductCardComponent
+        product.render(item)
+    }
+
     get pageRoot() {
-        return document.getElementById('main-page');
+        return document.getElementById('product-page');
     }
-      
+
     getHTML() {
         return `
-            <div id="main-page" class="d-flex flex-wrap"></div>
+            <div id="product-page"></div>
         `;
     }
-        
-    async getData() {
-        return new Promise((resolve) => {
-            ajax.get(stockUrls.getStocks(), (data) => {
-                resolve(Array.isArray(data) ? data : []);
-            });
-        });
-    }
 
-
-
-    async clickCopy() {
-    try {
-        const data = await this.getData();
-        if (data.length === 0) {
-        console.warn("Нет данных для копирования");
-        return;
+    clickBack() {
+        const mainPage = new MainPage(this.parent); // Восстанавливаем MainPage с сохраненным состоянием
+        if (this.mainPageState) {
+            MainPage.cards = this.mainPageState.cards;
+            MainPage.cardCount = this.mainPageState.cardCount;
         }
-
-        // Удаляем старый id, чтобы сервер назначил новый
-        const { id, ...itemToCopy } = data[0];
-        console.log('Отправка:', itemToCopy); // Логируем данные
-
-        await new Promise((resolve, reject) => {
-        ajax.post(
-            stockUrls.createStock(), 
-            itemToCopy,
-            (response) => {
-            console.log('Ответ сервера:', response);
-            MainPage.cards.push(response);
-            this.renderData([response]);
-            resolve();
-            },
-            (error) => {
-            console.error('Ошибка:', error);
-            reject(error);
-            }
-        );
-        });
-    } catch (error) {
-        console.error('Ошибка копирования:', error);
-        alert('Ошибка: ' + error.message);
-    }
+        mainPage.render();
     }
 
-    clickCard(e) {
-        const cardId = e.target.dataset.id;
-        const productPage = new ProductPage(
-            this.parent, 
-            cardId,
-            {
-                cards: MainPage.cards,
-                cardCount: MainPage.cardCount
-            }
-        );
-        productPage.render();
+    clickHome(){
+        const mainPage = new MainPage(this.parent)
+        if (this.mainPageState){
+            MainPage.cards = this.mainPageState.cards;
+            MainPage.cardCount = this.mainPageState.cardCount;
+        }
+        mainPage.render();
     }
 
-    async clickDelete(e) {
-        const cardId = parseInt(e.target.dataset.id);
-        ajax.delete(stockUrls.getStockById(cardId), (data) => {
-            MainPage.cards = MainPage.cards.filter(card => card.id !== cardId);
-            this.render();
-        })
-    }
-
-    clickHome() {
-        MainPage.cards = [];
-        MainPage.cardCount = 0;
-        this.render();
-    }
-
-    clickAdd() {
-        const addEditPage = new AddEditPage(this.parent, {
-            onSave: (newItem) => {
-                this.render();
-            }
-        });
-        addEditPage.render();
-    }
-
-    renderData(items) {
-        items.forEach((item) => {
-            const productCard = new ProductCardComponent(this.pageRoot);
-            productCard.render(item, this.clickCard.bind(this), this.clickDelete.bind(this));
-        });
-    }
-
-    async render() {
+    render() {
         this.parent.innerHTML = '';
         const html = this.getHTML();
         this.parent.insertAdjacentHTML('beforeend', html);
-
-        if (MainPage.cards.length > 0) {
-            this.renderData(MainPage.cards);
-        } else {
-            // Иначе загружаем начальные данные
-            const data = await this.getData();
-            MainPage.cards = [...data];
-            MainPage.cardCount = data.length;
-            this.renderData(data);
-        }
-        
-        const copyButton = new CopyButtonComponent(this.pageRoot);
-        copyButton.render(this.clickCopy.bind(this));
-
+    
         const homeButton = new HomeButtonComponent(this.pageRoot);
-        homeButton.render(this.clickHome.bind(this), { 
-            fixed: true,
-            left: '0px',
-            top: "0px"
-        });
+        homeButton.render(this.clickHome.bind(this))
+        
+        const backButton = new BackButtonComponent(this.pageRoot);
+        backButton.render(this.clickBack.bind(this));
 
-        const addButton = new AddButtonComponent(this.pageRoot);
-        addButton.render(this.clickAdd.bind(this),{
-            fixed: true,
-            left: '250px'
-        });
+        // const data = this.getData();
+        // const product = new ProductComponent(this.pageRoot);
+        // product.render(data);
+
+        this.getData()
     }
 }

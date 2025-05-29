@@ -2,39 +2,49 @@ import { ProductComponent } from "../../components/product/index.js";
 import { BackButtonComponent } from "../../components/back-button/index.js";
 import { MainPage } from "../main/index.js";
 import { HomeButtonComponent } from "../../components/home-button/index.js";
-import { ajax } from "../../modules/ajax.js";
 import { stockUrls } from "../../modules/stockUrls.js";
-import { ProductCardComponent } from "../../components/product-card/index.js";
 
 export class ProductPage {
     constructor(parent, id, mainPageState = null) {
         this.parent = parent;
         this.id = id;
-        this.mainPageState = mainPageState; // Сохраняем состояние MainPage
+        this.mainPageState = mainPageState;
     }
 
     getData() {
-        ajax.get(stockUrls.getStockById(this.id), (data, status) => {
-            if (status === 200 && data) {
-                // Если карточка найдена - рендерим её
-                this.renderData(data);
-            } else {
-                // Если нет - рендерим первую карточку
-                const fallbackData = {
-                id: 1,
-                src: "https://gu-st.ru/content/Banner/large_family_e_card_mobile.svg",
-                title: "Услуга 1",
-                text: "Удостоверение многодетных"
-            };
-            this.renderData(fallbackData);
-            }
-        });
+        return fetch(stockUrls.getStockById(this.id))
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok');
+            })
+            .then(data => {
+                if (data) {
+                    return data;
+                }
+                // Fallback данные если запрос не удался
+                return {
+                    id: 1,
+                    src: "https://gu-st.ru/content/Banner/large_family_e_card_mobile.svg",
+                    title: "Услуга 1",
+                    text: "Удостоверение многодетных"
+                };
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки данных:', error);
+                return {
+                    id: 1,
+                    src: "https://gu-st.ru/content/Banner/large_family_e_card_mobile.svg",
+                    title: "Услуга 1",
+                    text: "Ошибка загрузки данных"
+                };
+            });
     }
 
-
     renderData(item) {
-        const product = new ProductComponent(this.pageRoot) // было  ProductCardComponent
-        product.render(item)
+        const product = new ProductComponent(this.pageRoot);
+        product.render(item);
     }
 
     get pageRoot() {
@@ -42,13 +52,11 @@ export class ProductPage {
     }
 
     getHTML() {
-        return `
-            <div id="product-page"></div>
-        `;
+        return `<div id="product-page"></div>`;
     }
 
     clickBack() {
-        const mainPage = new MainPage(this.parent); // Восстанавливаем MainPage с сохраненным состоянием
+        const mainPage = new MainPage(this.parent);
         if (this.mainPageState) {
             MainPage.cards = this.mainPageState.cards;
             MainPage.cardCount = this.mainPageState.cardCount;
@@ -56,9 +64,9 @@ export class ProductPage {
         mainPage.render();
     }
 
-    clickHome(){
-        const mainPage = new MainPage(this.parent)
-        if (this.mainPageState){
+    clickHome() {
+        const mainPage = new MainPage(this.parent);
+        if (this.mainPageState) {
             MainPage.cards = this.mainPageState.cards;
             MainPage.cardCount = this.mainPageState.cardCount;
         }
@@ -67,19 +75,20 @@ export class ProductPage {
 
     render() {
         this.parent.innerHTML = '';
-        const html = this.getHTML();
-        this.parent.insertAdjacentHTML('beforeend', html);
-    
+        this.parent.insertAdjacentHTML('beforeend', this.getHTML());
+        
         const homeButton = new HomeButtonComponent(this.pageRoot);
-        homeButton.render(this.clickHome.bind(this))
+        homeButton.render(this.clickHome.bind(this));
         
         const backButton = new BackButtonComponent(this.pageRoot);
         backButton.render(this.clickBack.bind(this));
 
-        // const data = this.getData();
-        // const product = new ProductComponent(this.pageRoot);
-        // product.render(data);
-
         this.getData()
+            .then(data => {
+                this.renderData(data);
+            })
+            .catch(error => {
+                console.error('Ошибка рендеринга:', error);
+            });
     }
 }
