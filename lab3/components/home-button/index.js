@@ -12,7 +12,7 @@ export class HomeButtonComponent {
 
         return `
             <button id="home-button" 
-                    class="btn btn-primary" 
+                    class="btn btn-info text-white fw-bold shadow-sm" 
                     type="button"
                     style="${fixedStyle}">
                 Домой
