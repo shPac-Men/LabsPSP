@@ -30,4 +30,3 @@ export class AddButtonComponent{
         document.getElementById("add-button").addEventListener("click", listener);
     }
 }
-
